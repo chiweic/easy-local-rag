@@ -1,6 +1,6 @@
 import os
-import tkinter as tk
-from tkinter import filedialog
+#import tkinter as tk
+#from tkinter import filedialog
 import PyPDF2
 import re
 import json
@@ -104,21 +104,41 @@ def upload_jsonfile():
                     vault_file.write(chunk.strip() + "\n\n")  # Two newlines to separate chunks
             print(f"JSON file content appended to vault.txt with each chunk on a separate line.")
 
+import logging
+if __name__ == '__main__':
+    logging.basicConfig(lelve=logging.INFO)
+    #upload_jsonfile(file_path='demo.json')
+    jsonl=[]
+    with open('/mnt/dump/法鼓全集.json','r') as fp:
+        for line in fp:
+            jsonl.append(json.loads(line))
+
+    count = 1
+    with open("vault.txt", "w", encoding="utf-8") as vault_file:
+        for json_item in jsonl:
+            chunk_str=json_item['question']+json_item['answer']
+            vault_file.write(chunk_str+"\n\n")
+            if count > 10: 
+                break
+            count += 1
+    
+
+
 # Create the main window
-root = tk.Tk()
-root.title("Upload .pdf, .txt, or .json")
+#root = tk.Tk()
+#root.title("Upload .pdf, .txt, or .json")
 
 # Create a button to open the file dialog for PDF
-pdf_button = tk.Button(root, text="Upload PDF", command=convert_pdf_to_text)
-pdf_button.pack(pady=10)
+#pdf_button = tk.Button(root, text="Upload PDF", command=convert_pdf_to_text)
+#pdf_button.pack(pady=10)
 
 # Create a button to open the file dialog for text file
-txt_button = tk.Button(root, text="Upload Text File", command=upload_txtfile)
-txt_button.pack(pady=10)
+#txt_button = tk.Button(root, text="Upload Text File", command=upload_txtfile)
+#txt_button.pack(pady=10)
 
 # Create a button to open the file dialog for JSON file
-json_button = tk.Button(root, text="Upload JSON File", command=upload_jsonfile)
-json_button.pack(pady=10)
+#json_button = tk.Button(root, text="Upload JSON File", command=upload_jsonfile)
+#json_button.pack(pady=10)
 
 # Run the main event loop
-root.mainloop()
+#root.mainloop()
